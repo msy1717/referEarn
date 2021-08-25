@@ -1,0 +1,40 @@
+{
+    "name": "MrunalSessionBOT",
+    "description": "A bot CAN DO ANYTHING",
+    "logo": "https://telegra.ph/file/d7235b1ee1911242aa3bd.jpg",
+    "keywords": [
+        "TELETHON",
+        "TelebotsByMrunal",
+        "Telegram Bot",
+        "piro bolte",
+        "Godmrunal"
+    ],
+    "website": "",
+    "success_url": "https://t.me/TelebotsByMrunal",
+    "env": {
+        "BOT_TOKEN": {
+            "description": "You Telegram Bot Token from @BotFather",
+            "value": ""
+        },
+        "API_HASH": {
+            "description": "Your API Hash from my.telegram.org",
+            "value": ""
+        },
+        "APP_ID": {
+            "description": "Your API ID from my.telegram.org",
+            "value": ""
+        }
+    },
+    "addons": [],
+    "buildpacks": [
+        {
+            "url": "heroku/python"
+        }
+    ],
+    "formation": {
+        "worker": {
+            "quantity": 1,
+            "size": "free"
+        }
+    }
+}
